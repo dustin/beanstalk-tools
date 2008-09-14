@@ -30,3 +30,23 @@ deletes items based on regexes over the content.
     usage: vi beanstalk-cleanup.rb
            # edit the awesome hard-coded bury and delete rules
            beanstalk-cleanup.rb host:11300
+
+## Nagios Monitoring Scripts
+
+### beanstalk-jobs.rb
+
+Ensures the number of jobs in the default tube fall within a reasonable range.
+
+    usage: beanstalk-jobs.rb host:11300 warn_jobs err_jobs
+
+warn\_jobs and err\_jobs respectively set the maximum number of jobs found
+before a warning or error is issued.
+
+### beanstalk-workers.rb
+
+Ensures that the number of workers within the queue is within range.
+
+    usage: beanstalk-workers.rb host:11300 warn_workers error_workers
+
+warn\_workers and error\_workers respectively specify the minimum workers
+that should be in place before a warning or error is issued.
