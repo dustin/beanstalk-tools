@@ -57,7 +57,8 @@ Ensures the growth rate of a particular stat is within range.
 
     usage: beanstalk-rate.rb host:11300 stat_name err_min warn_min warn_max err_max
 
-All min and max values are required and are interpreted as floats.
+All min and max values are required and are interpreted as floats.  The rates
+are expressed as units per second.
 
 **Note**: this only works for stats in the default stat values right now.
 More work is needed to support tube specific stats.
