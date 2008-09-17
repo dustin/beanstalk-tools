@@ -50,3 +50,14 @@ Ensures that the number of workers within the queue is within range.
 
 warn\_workers and error\_workers respectively specify the minimum workers
 that should be in place before a warning or error is issued.
+
+### beanstalk-rate.rb
+
+Ensures the growth rate of a particular stat is within range.
+
+    usage: beanstalk-rate.rb host:11300 stat_name err_min warn_min warn_max err_max
+
+All min and max values are required and are interpreted as floats.
+
+**Note**: this only works for stats in the default stat values right now.
+More work is needed to support tube specific stats.
