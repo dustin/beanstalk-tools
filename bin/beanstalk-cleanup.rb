@@ -9,7 +9,12 @@ saw={}
 
 loop do
   job = BS.reserve
-  code = job.ybody[:code]
+  code = case job.ybody
+  when Hash
+    job.ybody[:code]
+  else
+    job.ybody.inspect
+  end
   if saw[code] && saw[code] != job.id
     puts "Already saw something that looked like #{job.id} (#{code}) (deleting)"
     job.delete
