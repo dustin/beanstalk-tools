@@ -9,9 +9,9 @@ BS=Beanstalk::Connection.new $*.first
 
 f=open filename do |f|
   YAML.each_document(f) do |y|
+    BS.use y[:tube]
     args = [:body, :pri, :delay, :ttr].map{|a| y[a]}
     j = BS.put *args
     puts "Placed #{j}"
   end
 end
-
