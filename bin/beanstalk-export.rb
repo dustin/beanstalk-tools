@@ -16,11 +16,14 @@ def export(t)
   loop do
     job = BS.reserve 0
 
-    puts YAML::dump(:tube => t, :delay => job.delay,
+    # Record the time the job should actually start.
+    d = Time.now.to_i + job.delay
+
+    puts YAML::dump(:tube => t, :when => d,
                     :pri => job.pri, :ttr => job.ttr,
                     :body => job.body)
     $stdout.flush
-    $stderr.puts "Got job #{job.id}"
+    $stderr.puts "Got job #{job.id} (+#{job.delay})"
     job.delete
   end
 rescue Beanstalk::TimedOut

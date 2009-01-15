@@ -10,8 +10,12 @@ BS=Beanstalk::Connection.new $*.first
 f=open filename do |f|
   YAML.each_document(f) do |y|
     BS.use y[:tube]
-    args = [:body, :pri, :delay, :ttr].map{|a| y[a]}
-    j = BS.put *args
-    puts "Placed #{j}"
+    body, pri, t, ttr = [:body, :pri, :when, :ttr].map{|a| y[a]}
+
+    delay = [0, t - Time.now.to_i].max
+
+    j = BS.put body, pri, delay, ttr
+
+    puts "Placed #{j} (+#{delay})"
   end
 end
