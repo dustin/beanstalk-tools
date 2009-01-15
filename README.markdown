@@ -31,6 +31,37 @@ deletes items based on regexes over the content.
            # edit the awesome hard-coded bury and delete rules
            beanstalk-cleanup.rb host:11300
 
+### beanstalk-export.rb
+
+beanstalk-export.rb will export all of the jobs from a server.  You
+can use it to perform a server upgrade, or migrate all of the jobs
+from one server another.
+
+You *should* put the server in draining mode (send signal `USR1`)
+before starting this to ensure new jobs aren't getting queued.  You
+may also consider shutting down your workers since it may otherwise
+cause jobs to be executed prematurely.
+
+Note that the following job attributes are preserved:
+
+* tube
+* delay
+* priority
+* ttr
+* body
+
+Anything else (e.g. buried status or number of failures) is lost in
+translation.
+
+    usage: beanstalk-export.rb host:11300 > export.yml
+
+### beanstalk-import.rb
+
+beanstalk-import.rb is a tool to complement to beanstalk-export.rb by
+allowing the export to be loaded into another server.
+
+    usage: beanstalk-import.rb export.yml host:11300
+
 ## Nagios Monitoring Scripts
 
 ### beanstalk-jobs.rb
