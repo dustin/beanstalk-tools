@@ -14,7 +14,15 @@ end
 
 def export(t)
   loop do
-    job = BS.reserve 0
+    job = begin
+      BS.reserve 0
+    rescue Beanstalk::BadFormatError
+      # Hacky way to handle a really old version.
+      st = BS.stats_tube t
+      remaining = st['current-jobs-urgent'] + st['current-jobs-ready']
+      raise Beanstalk::TimedOut if remaining == 0
+      BS.reserve
+    end
 
     # Record the time the job should actually start.
     d = Time.now.to_i + job.delay
