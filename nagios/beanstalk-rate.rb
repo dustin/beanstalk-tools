@@ -9,13 +9,15 @@ class PersistedStat
 
   attr_reader :host, :stat_name, :val, :timestamp
 
-  def initialize(host, stat_name, path="/var/tmp/beanstalk_stat")
+  def initialize(host, stat_name, tube=nil, path="/var/tmp/beanstalk_stat")
     f=nil
     @host=host
     @stat_name=stat_name
+    @tube = tube
+    @stat_storage_name = "#{tube}#{stat_name}"
 
     @dir=File.join(path, host.gsub(/:/, '_'))
-    @filename=File.join(@dir, stat_name)
+    @filename=File.join(@dir,  @stat_storage_name)
 
     @timestamp=File.stat(@filename).mtime
     f=open(@filename)
@@ -130,7 +132,7 @@ if val.nil?
   exit
 end
 
-pstat=PersistedStat.new server, stat
+pstat=PersistedStat.new server, stat, options[:tube]
 
 rate = pstat.rate(val)
 
