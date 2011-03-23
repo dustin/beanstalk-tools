@@ -137,17 +137,17 @@ pstat=PersistedStat.new server, stat, options[:tube]
 rate = pstat.rate(val)
 
 status, msg = if rate.nil?
-  [1, "No stored data for #{stat} yet."]
+  [1, "WARNING - No stored data for #{stat} yet."]
 elsif rate < options[:errorlow]
-  [2, "#{stat} rate is too low:  #{rate}/s (expected at last #{options[:errorlow]})"]
+  [2, "CRITICAL - #{stat} rate is too low:  #{rate}/s (expected at last #{options[:errorlow]})"]
 elsif rate < options[:warnlow]
-  [1, "#{stat} rate is too low:  #{rate}/s (want at last #{options[:warnlow]})"]
+  [1, "WARNING #{stat} rate is too low:  #{rate}/s (want at last #{options[:warnlow]})"]
 elsif rate > options[:errorhigh]
-  [2, "#{stat} rate is too high:  #{rate}/s (max is #{ options[:errorhigh]})"]
+  [2, "CRITICAL - #{stat} rate is too high:  #{rate}/s (max is #{ options[:errorhigh]})"]
 elsif rate > options[:warnhigh]
-  [1, "#{stat} rate is too high:  #{rate}/s (warn is #{options[:warnhigh]})"]
+  [1, "WARNING - #{stat} rate is too high:  #{rate}/s (warn is #{options[:warnhigh]})"]
 else
-  [0, "#{stat} rate is #{rate}/s"]
+  [0, "OK - #{stat} rate is #{rate}/s"]
 end
 
 pstat.val=val
