@@ -66,11 +66,11 @@ workers = stats['current-workers']
 workers =  workers ?  workers : 0 
 
 status, msg = if workers < options[:error]
-  [2, "Required at least #{options[:error]} workers.  Have #{workers}"]
+  [2, "CRITICAL - Required at least #{options[:error]} workers.  Have #{workers}"]
 elsif workers < options[:warn]
-  [1, "Wanted at least #{options[:warn]} workers.  Have #{workers}"]
+  [1, "WARNING - Wanted at least #{options[:warn]} workers.  Have #{workers}"]
 else
-  [0, "#{workers} workers found."]
+  [0, "OK - #{workers} workers found."]
 end
 
 puts msg
