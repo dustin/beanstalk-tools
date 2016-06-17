@@ -139,9 +139,9 @@ rate = pstat.rate(val)
 status, msg = if rate.nil?
   [1, "WARNING - No stored data for #{stat} yet."]
 elsif rate < options[:errorlow]
-  [2, "CRITICAL - #{stat} rate is too low:  #{rate}/s (expected at last #{options[:errorlow]})"]
+  [2, "CRITICAL - #{stat} rate is too low:  #{rate}/s (expected at least #{options[:errorlow]})"]
 elsif rate < options[:warnlow]
-  [1, "WARNING #{stat} rate is too low:  #{rate}/s (want at last #{options[:warnlow]})"]
+  [1, "WARNING #{stat} rate is too low:  #{rate}/s (want at least #{options[:warnlow]})"]
 elsif rate > options[:errorhigh]
   [2, "CRITICAL - #{stat} rate is too high:  #{rate}/s (max is #{ options[:errorhigh]})"]
 elsif rate > options[:warnhigh]
