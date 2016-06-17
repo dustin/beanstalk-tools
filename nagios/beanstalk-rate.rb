@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'fileutils'
+require 'optparse'
 
 require 'rubygems'
 require 'beanstalk-client'
@@ -48,22 +49,17 @@ class PersistedStat
 
 end
 
-
-
-
-require 'optparse'
-
 options = {}
 optparse = OptionParser.new do |opts|
   opts.banner = "Usage: beanstalk-jobs.rb [options]"
   opts.on("-h", "--host HOST", "beanstalk host") do | host|
     options[:host] = host
   end
-  
+
   opts.on("--port", "--port PORT", "beanstalk port") do | port |
     options[:port] = port
   end
-  
+
   opts.on("--stat", "--stat STAT_NAME",  "The name of the statistic") do | stat|
     options[:stat] = stat
   end
@@ -71,26 +67,26 @@ optparse = OptionParser.new do |opts|
   opts.on("--errorlow", "--errorlow [ERROR_LIMIT]", Float, "Lower error bound for statistic") do | error_limit|
     options[:errorlow] = error_limit
   end
-  
+
   opts.on("--errorhigh", "--errorhigh [ERROR_LIMIT]", Float, "Upper error bound for statistic") do | error_limit|
     options[:errorhigh] = error_limit
   end
-  
+
   opts.on("--warnlow", "--warnlow [WARN_LIMIT]", Float, "Lower warn bound for statistic") do | warn_limit|
     options[:warnlow] = warn_limit
   end
-    
+
   opts.on("--warnhigh", "--warnhigh [WARN_LIMIT]", Float, "Upper warn bound for statistic") do | warn_limit|
     options[:warnhigh] = warn_limit
   end
-  
+
   opts.on("--tube", "--tube TUBE", "beanstalk tube") do | tube |
-    options[:tube] = tube 
+    options[:tube] = tube
   end
-    
+
 end
 
-begin 
+begin
   optparse.parse!
 
   mandatory = [:host, :port, :stat, :errorlow, :warnlow, :errorhigh, :warnhigh]
@@ -103,32 +99,29 @@ begin
 
 rescue OptionParser::InvalidOption, OptionParser::MissingArgument
   puts $!.to_s
-  puts optparse 
+  puts optparse
   exit
 end
 
 server = "#{options[:host]}:#{options[:port]}"
 connection = Beanstalk::Connection.new(server)
 
-
 if options[:tube]
   begin
     stats = connection.stats_tube(options[:tube])
   rescue Beanstalk::NotFoundError
-    puts "Tube #{options[:tube]} not found." 
+    puts "Tube #{options[:tube]} not found."
     exit
   end
 else
  stats = connection.stats
 end
 
-
-
 stat = options[:stat]
 val = stats[stat]
 
 if val.nil?
-  puts "No value for stat #{stat}" 
+  puts "No value for stat #{stat}"
   exit
 end
 

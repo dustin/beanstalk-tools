@@ -40,14 +40,11 @@ begin
     puts optparse
     exit
   end
-
 rescue OptionParser::InvalidOption, OptionParser::MissingArgument
   puts $!.to_s
   puts optparse 
   exit
 end
-
-
 
 connection = Beanstalk::Connection.new("#{options[:host]}:#{options[:port]}")
 
