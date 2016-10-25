@@ -5,7 +5,8 @@ manipulating beanstalkd.
 
 ## Interactive Commands
 
-Interactive commands are in the bin directory.
+Interactive commands are in the bin directory.  
+Before using below commands make sure to run this command ```sudo gem install  beanstalk-client```.
 
 ### beanstalk-stats.rb
 
