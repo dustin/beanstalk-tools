@@ -8,7 +8,7 @@ filename = $*.shift
 BS=Beanstalk::Connection.new $*.first
 
 f=open filename do |f|
-  YAML.each_document(f) do |y|
+  Psych.load_stream(f) do |y|
     BS.use y[:tube]
     body, pri, t, ttr = [:body, :pri, :when, :ttr].map{|a| y[a]}
 
